@@ -45,7 +45,7 @@ fn main() {
     // eprintln!("Env Vars: {:?}", env_vars);
 
     let command = format!(
-        "& {{ $env:PATH = \"{};\" + $env:Path; {}; Start -FilePath {} -WorkingDirectory {} -ArgumentList {} -Wait -NoNewWindow }}",
+        "& {{ $env:PATH = \"{};\" + $env:Path; {}; Start -FilePath {} -WorkingDirectory {} -ArgumentList \"{}\" -Wait -NoNewWindow }}",
         library_paths,
         env_vars,
         converted_path,
