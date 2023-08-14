@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::env;
-use std::process::{Command, Stdio};
+use std::process::Command;
 
 fn main() {
     // for argument in env::args() {
@@ -45,7 +45,7 @@ fn main() {
     // eprintln!("Env Vars: {:?}", env_vars);
 
     let command = format!(
-        "& {{ $env:PATH = \"{};\" + $env:Path; {}; Start -FilePath {} -WorkingDirectory {} -ArgumentList {} -Wait }}",
+        "& {{ $env:PATH = \"{};\" + $env:Path; {}; Start -FilePath {} -WorkingDirectory {} -ArgumentList {} -Wait -NoNewWindow }}",
         library_paths,
         env_vars,
         converted_path,
@@ -56,17 +56,14 @@ fn main() {
     );
     // eprintln!("Command: {:?}", command);
 
-    let _output = Command::new("powershell.exe")
+    let mut child = Command::new("powershell.exe")
         .arg("-Command")
         .arg(command)
         .arg("-NonInteractive")
         .arg("-NoLogo")
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .output()
+        .spawn()
         .unwrap();
-
-    // eprintln!("{output:?}");
+    child.wait().unwrap();
 }
 
 fn wsl_to_windows(path: &str) -> String {
