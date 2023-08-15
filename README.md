@@ -1,6 +1,6 @@
 # wsl2windows-runner
 
-A cargo target runner for use on Windows to build in WSL2 and run the output .exe in Windows.
+A [cargo target runner](https://nexte.st/book/target-runners.html) for use on Windows to build in WSL2 and run the output .exe in Windows.
 
 Once it's setup you can just run `cargo run` while in WSL. It will build in WSL2 as usual but then run in Windows.
 
@@ -71,7 +71,7 @@ cargo clippy --features bevy/dynamic_linking
 
 # First Time Setup
 
-## Install WSL2 and install Rust in it
+## Install WSL2 and Rust
 
 ```shell
 wsl --install
@@ -85,16 +85,14 @@ rustup target add x86_64-pc-windows-msvc
 While still in wsl:
 
 ```shell
-git clone https://gitlab.com/paul-hansen/wsl2windows-runner.git
-cd wsl2windows-runner
-cargo install --path .
+cargo install --git https://github.com/paul-hansen/wsl2windows-runner.git
 ```
 
 ## Install Windows SDK for MSVC inside WSL2 
 
-See https://bevy-cheatbook.github.io/setup/cross/linux-windows.html for more about this.
+See https://bevy-cheatbook.github.io/setup/cross/linux-windows.html for less condensed instructions.
 
-Replace /home/me/.xwin with the path you want to install the SDK to. Remember this path for the next step.
+Replace `/home/me/.xwin` in the next command with the path you want to install the SDK to. Remember this path for the next step.
 ```shell
 cargo install xwin
 xwin --accept-license splat --output /home/me/.xwin
@@ -116,3 +114,6 @@ rustflags = [
 ```
 
 I recommend adding `./cargo/config.toml` to your .gitignore file if you are collaborating as not everyone will want to use this.
+
+## Alternatives
+- [cross](https://github.com/cross-rs/cross) Building in docker containers. Didn't fit my needs because it uses `cross run` instead of `cargo run` and Clion doesn't play well with that.
