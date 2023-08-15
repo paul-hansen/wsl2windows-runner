@@ -31,7 +31,12 @@ fn main() {
         .collect::<Vec<_>>()
         .join(";");
 
-    let env_vars = &["CARGO_HOME", "CARGO_MANIFEST_DIR", "CARGO_PKG_NAME"];
+    let env_vars = &[
+        "CARGO_HOME",
+        "CARGO_MANIFEST_DIR",
+        "CARGO_PKG_NAME",
+        "RUST_LOG",
+    ];
     let env_vars: HashMap<String, String> =
         HashMap::from_iter(env::vars().filter(|(key, _)| env_vars.contains(&key.as_str())));
     let env_vars = env_vars
