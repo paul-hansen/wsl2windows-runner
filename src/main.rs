@@ -49,15 +49,24 @@ fn main() {
     // eprintln!("Out Library Paths: {:?}", library_paths);
     // eprintln!("Env Vars: {:?}", env_vars);
 
+    let args = if args.len() > 0 {
+        format!(
+            "-ArgumentList \"{}\"",
+            args.map(|x| x.trim().to_string())
+                .collect::<Vec<_>>()
+                .join(" ")
+        )
+    } else {
+        String::new()
+    };
+
     let command = format!(
-        "& {{ $env:PATH = \"{};\" + $env:Path; {}; Start -FilePath {} -WorkingDirectory {} -ArgumentList \"{}\" -Wait -NoNewWindow }}",
+        "& {{ $env:PATH = \"{};\" + $env:Path; {}; Start -FilePath {} -WorkingDirectory {} {} -Wait -NoNewWindow }}",
         library_paths,
         env_vars,
         converted_path,
         wsl_to_windows(&env::current_dir().unwrap().to_string_lossy(),),
-        args.map(|x| x.trim().to_string())
-            .collect::<Vec<_>>()
-            .join(" ")
+        args
     );
     // eprintln!("Command: {:?}", command);
 
