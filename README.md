@@ -9,11 +9,11 @@ Once it's setup you can just run `cargo run` while in WSL. It will build in WSL2
 ## Why?
 Rust compilation on Windows is slower than on linux even when building exe files with the msvc toolchain, 
 and it's a pain (impossible?) to get some graphical applications like [Bevy](https://bevyengine.org) to run in WSL2. 
-This allows you to have some of the build speed improvements of building on linux while still being able to have the output .exe run in Windows automatically. This works great with Clion.
+This allows you to have some of the build speed improvements of building on linux while still being able to have the output .exe run in Windows automatically. Works great with RustRover/Clion (or other IDEs that support using Rust with WSL and expect to be able to use cargo run).
 
 ## Performance comparison
 
-These numbers will vary greatly and should only be used to get a rough idea of the performance gain you _might_ get.
+These numbers will vary greatly and should only be used to get a rough idea of the performance gain you _might_ get. The numbers varied greatly even between runs on the same machine in some cases. I recommend comparing with your own setup to make sure it's benefiting you with your setup and project.
 
 ### Clean Build
 
@@ -25,7 +25,6 @@ cargo run --features bevy/dynamic_linking
 | Windows | WSL    |
 |---------|--------|
 | 2m 35s  | 2m 10s |
-| 2m 32s  | 1m 56s |
 
 ### Incremental Build
 
@@ -37,9 +36,7 @@ cargo run --features bevy/dynamic_linking
 
 | Windows | WSL   |
 |---------|-------|
-| 5.65s   | 4.08s |
 | 5.71s   | 4.05s |
-| 5.69s   | 3.93s |
 
 ### Clippy
 
@@ -51,10 +48,7 @@ cargo clippy --features bevy/dynamic_linking
 
 | Windows | WSL   |
 |---------|-------|
-| 3.89s   | 2.79s |
-| 2.98s   | 3.33s |
 | 2.96s   | 2.69s |
-| 3.06s   | 2.64s |
 
 #### Test machine
 - AMD Ryzen 9 7950X (32 threads 5.20 GHz all cores)
@@ -115,5 +109,13 @@ rustflags = [
 
 I recommend adding `./cargo/config.toml` to your .gitignore file if you are collaborating as not everyone will want to use this.
 
+## Other/additional ways to reduce compile times
+
+If you are looking at this project these resources may be useful to you as well:
+- https://davidlattimore.github.io/working-on-rust-iteration-time.html
+- https://benw.is/posts/how-i-improved-my-rust-compile-times-by-seventy-five-percent
+- https://matklad.github.io/2021/09/04/fast-rust-builds.html
+
 ## Alternatives
+
 - [cross](https://github.com/cross-rs/cross) Building in docker containers. Didn't fit my needs because it uses `cross run` instead of `cargo run` and Clion doesn't play well with that.
